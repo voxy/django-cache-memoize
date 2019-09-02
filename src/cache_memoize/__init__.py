@@ -3,7 +3,7 @@ from functools import wraps
 import hashlib
 from urllib.parse import quote
 
-from django.core.cache import caches, DEFAULT_CACHE_ALIAS
+from django.core.cache import caches as django_caches, DEFAULT_CACHE_ALIAS
 
 from django.utils.encoding import force_bytes
 
@@ -19,6 +19,7 @@ def cache_memoize(
     key_generator_callable=None,
     store_result=True,
     cache_alias=DEFAULT_CACHE_ALIAS,
+    caches=django_caches
 ):
     """Decorator for memoizing function calls where we use the
     "local cache" to store the result.
@@ -34,6 +35,7 @@ def cache_memoize(
     :arg bool store_result: If you know the result is not important, just
     that the cache blocked it from running repeatedly, set this to False.
     :arg string cache_alias: The cache alias to use; defaults to 'default'.
+    :arg string caches: The cache alias to use; defaults to 'default'.
 
     Usage::
 

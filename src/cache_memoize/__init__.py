@@ -1,7 +1,6 @@
 from functools import wraps
 
 import hashlib
-from urllib.parse import quote
 
 from django.core.cache import caches as django_caches, DEFAULT_CACHE_ALIAS
 
@@ -95,8 +94,8 @@ def cache_memoize(
     def decorator(func):
         def _default_make_cache_key(*args, **kwargs):
             cache_key = ":".join(
-                [quote(str(x)) for x in args_rewrite(*args)]
-                + [quote("{}={}".format(k, v)) for k, v in kwargs.items()]
+                [str(x) for x in args_rewrite(*args)]
+                + ["{}={}".format(k, v) for k, v in kwargs.items()]
             )
             return hashlib.md5(
                 force_bytes("cache_memoize" + (prefix or func.__name__) + cache_key)
